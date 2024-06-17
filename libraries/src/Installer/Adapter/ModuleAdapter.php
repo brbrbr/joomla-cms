@@ -130,33 +130,33 @@ class ModuleAdapter extends InstallerAdapter
 
         foreach ($site_list as $module) {
             if (file_exists(JPATH_SITE . "/modules/$module/$module.xml")) {
-                $manifest_details = Installer::parseXMLInstallFile(JPATH_SITE . "/modules/$module/$module.xml");
-                $extension        = Table::getInstance('extension');
-                $extension->set('type', 'module');
-                $extension->set('client_id', $site_info->id);
-                $extension->set('element', $module);
-                $extension->set('folder', '');
-                $extension->set('name', $module);
-                $extension->set('state', -1);
-                $extension->set('manifest_cache', json_encode($manifest_details));
-                $extension->set('params', '{}');
-                $results[] = clone $extension;
+                $manifest_details          = Installer::parseXMLInstallFile(JPATH_SITE . "/modules/$module/$module.xml");
+                $extension                 = Table::getInstance('extension');
+                $extension->type           = 'module';
+                $extension->client_id      = $site_info->id;
+                $extension->element        = $module;
+                $extension->folder         = '';
+                $extension->name           = $module;
+                $extension->state          = -1;
+                $extension->manifest_cache = json_encode($manifest_details);
+                $extension->params         = '{}';
+                $results[]                 = clone $extension;
             }
         }
 
         foreach ($admin_list as $module) {
             if (file_exists(JPATH_ADMINISTRATOR . "/modules/$module/$module.xml")) {
-                $manifest_details = Installer::parseXMLInstallFile(JPATH_ADMINISTRATOR . "/modules/$module/$module.xml");
-                $extension        = Table::getInstance('extension');
-                $extension->set('type', 'module');
-                $extension->set('client_id', $admin_info->id);
-                $extension->set('element', $module);
-                $extension->set('folder', '');
-                $extension->set('name', $module);
-                $extension->set('state', -1);
-                $extension->set('manifest_cache', json_encode($manifest_details));
-                $extension->set('params', '{}');
-                $results[] = clone $extension;
+                $manifest_details          = Installer::parseXMLInstallFile(JPATH_ADMINISTRATOR . "/modules/$module/$module.xml");
+                $extension                 = Table::getInstance('extension');
+                $extension->type           = 'module';
+                $extension->client_id      = $admin_info->id;
+                $extension->element        = $module;
+                $extension->folder         = '';
+                $extension->name           = $module;
+                $extension->state          = -1;
+                $extension->manifest_cache = json_encode($manifest_details);
+                $extension->params         = '{}';
+                $results[]                 = clone $extension;
             }
         }
 
@@ -247,19 +247,6 @@ class ModuleAdapter extends InstallerAdapter
         if (\count($modules)) {
             // Ensure the list is sane
             $modules = ArrayHelper::toInteger($modules);
-
-            // Wipe out any items assigned to menus
-            $query = $db->getQuery(true)
-                ->delete($db->quoteName('#__modules_menu'))
-                ->whereIn($db->quoteName('moduleid'), $modules);
-            $db->setQuery($query);
-
-            try {
-                $db->execute();
-            } catch (\RuntimeException $e) {
-                Log::add(Text::sprintf('JLIB_INSTALLER_ERROR_MOD_UNINSTALL_EXCEPTION', $e->getMessage()), Log::WARNING, 'jerror');
-                $retval = false;
-            }
 
             // Wipe out any instances in the modules table
             /** @var \Joomla\CMS\Table\Module $module */

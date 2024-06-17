@@ -10,6 +10,7 @@
 namespace Joomla\CMS\Extension;
 
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -139,6 +140,7 @@ class ExtensionHelper
         ['module', 'mod_articles_popular', '', 0],
         ['module', 'mod_banners', '', 0],
         ['module', 'mod_breadcrumbs', '', 0],
+        ['module', 'mod_content', '', 0],
         ['module', 'mod_custom', '', 0],
         ['module', 'mod_feed', '', 0],
         ['module', 'mod_finder', '', 0],
@@ -398,7 +400,7 @@ class ExtensionHelper
             return self::$coreExtensionIds;
         }
 
-        $db    = Factory::getDbo();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'));
@@ -474,7 +476,7 @@ class ExtensionHelper
         $key = $element . '.' . $type . '.' . $clientId . '.' . $folder;
 
         if (!\array_key_exists($key, self::$loadedExtensions)) {
-            $db    = Factory::getDbo();
+            $db    = Factory::getContainer()->get(DatabaseInterface::class);
             $query = $db->getQuery(true)
                 ->select('*')
                 ->from($db->quoteName('#__extensions'))

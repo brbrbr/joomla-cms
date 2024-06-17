@@ -21,7 +21,7 @@ use Joomla\Component\Modules\Administrator\Helper\ModulesHelper;
 // Initialise related data.
 $menuTypes = MenusHelper::getMenuLinks();
 
-$this->document->getWebAssetManager()
+$this->getDocument()->getWebAssetManager()
     ->useScript('joomla.treeselectmenu')
     ->useScript('com_modules.admin-module-edit-assignment');
 
@@ -82,9 +82,7 @@ $this->document->getWebAssetManager()
                             $selected = 0;
                             if ($this->item->assignment == 0) {
                                 $selected = 1;
-                            } elseif ($this->item->assignment < 0) {
-                                $selected = in_array(-$link->value, $this->item->assigned);
-                            } elseif ($this->item->assignment > 0) {
+                            } else {
                                 $selected = in_array($link->value, $this->item->assigned);
                             }
                             ?>

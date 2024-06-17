@@ -752,6 +752,8 @@ class CategoryModel extends AdminModel
 
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -1024,7 +1026,7 @@ class CategoryModel extends AdminModel
             }
 
             // Get the new item ID
-            $newId = $this->table->get('id');
+            $newId = $this->table->id;
 
             // Add the new ID to the array
             $newIds[$pk] = $newId;

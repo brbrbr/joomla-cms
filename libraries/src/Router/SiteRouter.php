@@ -309,6 +309,10 @@ class SiteRouter extends Router
             $item = $this->menu->getItem($uri->getVar('Itemid'));
         } else {
             $item = $this->menu->getDefault($this->app->getLanguage()->getTag());
+
+            if ($item->query['option'] !== $uri->getVar('option', $item->query['option'])) {
+                $item = false;
+            }
         }
 
         if ($item && $item->type === 'alias') {
@@ -588,9 +592,7 @@ class SiteRouter extends Router
      */
     public function setComponentRouter($component, $router)
     {
-        $reflection = new \ReflectionClass($router);
-
-        if (\in_array('Joomla\\CMS\\Component\\Router\\RouterInterface', $reflection->getInterfaceNames())) {
+        if ($router instanceof RouterInterface) {
             $this->componentRouters[$component] = $router;
 
             return true;

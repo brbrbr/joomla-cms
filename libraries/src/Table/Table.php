@@ -1380,7 +1380,7 @@ abstract class Table extends \stdClass implements TableInterface, DispatcherAwar
         // Handle the non-static case.
         if (isset($this) && ($this instanceof Table) && \is_null($against)) {
             $checkedOutField = $this->getColumnAlias('checked_out');
-            $against         = $this->get($checkedOutField);
+            $against         = $this->$checkedOutField;
         }
 
         // The item is not checked out or is checked out by the same user.
@@ -1390,7 +1390,7 @@ abstract class Table extends \stdClass implements TableInterface, DispatcherAwar
 
         // This last check can only be relied on if tracking session metadata
         if (Factory::getApplication()->get('session_metadata', true)) {
-            $db    = Factory::getDbo();
+            $db    = Factory::getContainer()->get(DatabaseInterface::class);
             $query = $db->getQuery(true)
                 ->select('COUNT(userid)')
                 ->from($db->quoteName('#__session'))

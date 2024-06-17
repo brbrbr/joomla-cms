@@ -19,9 +19,9 @@ use Joomla\CMS\Schema\ChangeSet;
 use Joomla\CMS\Table\Extension;
 use Joomla\CMS\Version;
 use Joomla\Component\Installer\Administrator\Helper\InstallerHelper;
-use Joomla\Database\DatabaseQuery;
 use Joomla\Database\Exception\ExecutionFailureException;
 use Joomla\Database\ParameterType;
+use Joomla\Database\QueryInterface;
 use Joomla\Registry\Registry;
 
 \JLoader::register('JoomlaInstallerScript', JPATH_ADMINISTRATOR . '/components/com_admin/script.php');
@@ -320,7 +320,7 @@ class DatabaseModel extends InstallerModel
     /**
      * Method to get the database query
      *
-     * @return  DatabaseQuery  The database query
+     * @return  QueryInterface  The database query
      *
      * @since   4.0.0
      */
@@ -584,15 +584,15 @@ class DatabaseModel extends InstallerModel
         $cache         = new Registry($table->manifest_cache);
         $updateVersion = $cache->get('version');
 
-        if ($table->get('type') === 'file' && $table->get('element') === 'joomla') {
+        if ($table->type === 'file' && $table->element === 'joomla') {
             $extensionVersion = new Version();
             $extensionVersion = $extensionVersion->getShortVersion();
         } else {
             $installationXML = InstallerHelper::getInstallationXML(
-                $table->get('element'),
-                $table->get('type'),
-                $table->get('client_id'),
-                $table->get('type') === 'plugin' ? $table->get('folder') : null
+                $table->element,
+                $table->type,
+                $table->client_id,
+                $table->type === 'plugin' ? $table->folder : null
             );
             $extensionVersion = (string) $installationXML->version;
         }
@@ -602,7 +602,7 @@ class DatabaseModel extends InstallerModel
         }
 
         $cache->set('version', $extensionVersion);
-        $table->set('manifest_cache', $cache->toString());
+        $table->manifest_cache = $cache->toString();
 
         if ($table->store()) {
             return $extensionVersion;

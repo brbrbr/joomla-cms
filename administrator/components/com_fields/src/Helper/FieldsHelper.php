@@ -24,6 +24,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Fields\Administrator\Model\FieldModel;
 use Joomla\Component\Fields\Administrator\Model\FieldsModel;
+use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Event\DispatcherInterface;
 
@@ -485,24 +486,14 @@ class FieldsHelper
         // Loading the XML fields string into the form
         $form->load($xml->saveXML());
 
-        $model = Factory::getApplication()->bootComponent('com_fields')
-            ->getMVCFactory()->createModel('Field', 'Administrator', ['ignore_request' => true]);
-
-        if (
-            (!isset($data->id) || !$data->id) && Factory::getApplication()->getInput()->getCmd('controller') == 'modules'
-            && Factory::getApplication()->isClient('site')
-        ) {
-            // Modules on front end editing don't have data and an id set
-            $data->id = Factory::getApplication()->getInput()->getInt('id');
-        }
-
         // Looping through the fields again to set the value
         if (!isset($data->id) || !$data->id) {
             return true;
         }
 
         foreach ($fields as $field) {
-            $value = $model->getFieldValue($field->id, $data->id);
+            // Get the value already loaded by static::getFields()
+            $value = $field->rawvalue;
 
             if ($value === null) {
                 continue;
@@ -600,7 +591,7 @@ class FieldsHelper
             return [];
         }
 
-        $db    = Factory::getDbo();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('a.category_id'))
@@ -629,7 +620,7 @@ class FieldsHelper
             return [];
         }
 
-        $db    = Factory::getDbo();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName('c.title'))
@@ -652,7 +643,7 @@ class FieldsHelper
      */
     public static function getFieldsPluginId()
     {
-        $db    = Factory::getDbo();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
