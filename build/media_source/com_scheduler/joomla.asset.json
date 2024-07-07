@@ -6,9 +6,9 @@
   "license": "GNU General Public License version 2 or later; see LICENSE.txt",
   "assets": [
     {
-      "name": "com_scheduler.test-task",
+      "name": "com_scheduler.run-task",
       "type": "script",
-      "uri": "com_scheduler/admin-view-run-test-task.js",
+      "uri": "com_scheduler/admin-view-run-task.js",
       "dependencies": [
         "core",
         "joomla.dialog"

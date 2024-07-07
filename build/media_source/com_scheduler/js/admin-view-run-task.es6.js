@@ -59,14 +59,14 @@ const runTheTask = (url, resultContainer) => {
         throw new Error(Joomla.Text._('JLIB_JS_AJAX_ERROR_NO_CONTENT'));
       }
 
-      statusHolder.textContent = Joomla.Text._('COM_SCHEDULER_TEST_RUN_STATUS_COMPLETED');
+      statusHolder.textContent = Joomla.Text._('COM_SCHEDULER_RUN_TASK_STATUS_COMPLETED');
 
       if (output.data.duration > 0) {
-        resultContainer.appendChild(createEl('div', Joomla.Text._('COM_SCHEDULER_TEST_RUN_DURATION').replace('%s', output.data.duration.toFixed(2))));
+        resultContainer.appendChild(createEl('div', Joomla.Text._('COM_SCHEDULER_RUN_TASK_DURATION').replace('%s', output.data.duration.toFixed(2))));
       }
 
       if (output.data.output) {
-        resultContainer.appendChild(createEl('div', Joomla.Text._('COM_SCHEDULER_TEST_RUN_OUTPUT').replace('%s', '').replace('<br>', '')));
+        resultContainer.appendChild(createEl('div', Joomla.Text._('COM_SCHEDULER_RUN_TASK_OUTPUT').replace('%s', '').replace('<br>', '')));
         resultContainer.appendChild(createEl('pre', output.data.output, ['bg-body', 'p-2']));
       }
 
@@ -74,7 +74,7 @@ const runTheTask = (url, resultContainer) => {
     })
     .catch((error) => {
       complete(false);
-      statusHolder.textContent = Joomla.Text._('COM_SCHEDULER_TEST_RUN_STATUS_TERMINATED');
+      statusHolder.textContent = Joomla.Text._('COM_SCHEDULER_RUN_TASK_STATUS_TERMINATED');
       resultContainer.appendChild(createEl('div', error.message, ['text-danger']));
     });
 };
@@ -98,8 +98,8 @@ document.addEventListener('click', (event) => {
     const body = createEl('div', '', ['p-3']);
     const progress = createEl('div', '', ['progress', 'mb-2']);
     const progressBar = createEl('div', '', ['progress-bar', 'progress-bar-striped', 'progress-bar-animated']);
-    body.appendChild(createEl('h4', Joomla.Text._('COM_SCHEDULER_TEST_RUN_TASK').replace('%s', title)));
-    body.appendChild(createEl('div', Joomla.Text._('COM_SCHEDULER_TEST_RUN_STATUS_STARTED'), ['mb-2', 'scheduler-status']));
+    body.appendChild(createEl('h4', Joomla.Text._('COM_SCHEDULER_RUN_TASK_TASK').replace('%s', title)));
+    body.appendChild(createEl('div', Joomla.Text._('COM_SCHEDULER_RUN_TASK_STATUS_STARTED'), ['mb-2', 'scheduler-status']));
     progress.appendChild(progressBar);
     body.appendChild(progress);
     progressBar.style.width = '0%';
@@ -109,7 +109,7 @@ document.addEventListener('click', (event) => {
   // Create dialog instance
   const dialog = new JoomlaDialog({
     popupType: 'inline',
-    textHeader: Joomla.Text._('COM_SCHEDULER_TEST_RUN_TITLE').replace('%d', id),
+    textHeader: Joomla.Text._('COM_SCHEDULER_RUN_TASK_TITLE').replace('%d', id),
     textClose: Joomla.Text._('JCLOSE'),
     popupContent: content,
     width: '800px',

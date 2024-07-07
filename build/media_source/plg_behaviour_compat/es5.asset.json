@@ -841,7 +841,7 @@
       }
     },
     {
-      "name": "com_scheduler.test-task.es5",
+      "name": "com_scheduler.run-task.es5",
       "type": "script",
       "deprecated": true,
       "uri": "",

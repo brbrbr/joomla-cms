@@ -81,7 +81,7 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
                 $mapping['onContentPrepareForm']  = 'enhanceSchedulerConfig';
                 $mapping['onExtensionBeforeSave'] = 'generateWebcronKey';
 
-                $mapping['onAjaxRunSchedulerTest'] = 'runTestCron';
+                $mapping['onAjaxRunSchedulerTask'] = 'runTaskCron';
             }
         }
 
@@ -212,7 +212,7 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
     }
 
     /**
-     * This method is responsible for the "test run" functionality in the Scheduler administrator backend interface.
+     * This method is responsible for the "run task" functionality in the Scheduler administrator backend interface.
      * Acting on a `com_ajax` call, this method requires the URL to have a `id` query parameter (corresponding to an
      * existing Task ID).
      *
@@ -224,7 +224,7 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
      *
      * @throws \Exception
      */
-    public function runTestCron(Event $event)
+    public function runTaskCron(Event $event)
     {
         if (!Session::checkToken('GET')) {
             return;
@@ -235,7 +235,7 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
 
         $user = $this->getApplication()->getIdentity();
 
-        if (empty($id) || !$user->authorise('core.testrun', 'com_scheduler.task.' . $id)) {
+        if (empty($id) || !$user->authorise('core.runtask', 'com_scheduler.task.' . $id)) {
             throw new \Exception($this->getApplication()->getLanguage()->_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
