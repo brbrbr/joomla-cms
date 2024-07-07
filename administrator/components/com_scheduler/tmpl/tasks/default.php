@@ -140,7 +140,7 @@ if ($this->hasDueTasks === true) {
                         <?php echo HTMLHelper::_('searchtools.sort', 'COM_SCHEDULER_NEXT_RUN_DATE', 'a.next_execution', $listDirn, $listOrder) ?>
                     </th>
 
-                    <!-- Test task -->
+                    <!--Run task -->
                     <th scope="col" class="d-none d-md-table-cell">
                         <?php echo Text::_('COM_SCHEDULER_RUN_TASK'); ?>
                     </th>
@@ -255,7 +255,7 @@ if ($this->hasDueTasks === true) {
                             <?php echo $item->next_execution ? HTMLHelper::_('date', $item->next_execution, 'DATE_FORMAT_LC5') : Text::_('COM_SCHEDULER_NEXT_RUN_MANUAL'); ?>
                         </td>
 
-                        <!-- Test task -->
+                        <!-- Run task -->
                         <td class="small d-none d-md-table-cell">
                             <button type="button" class="btn btn-sm btn-warning" <?php echo $item->state < 0 ? 'disabled' : ''; ?>
                                     data-scheduler-run
