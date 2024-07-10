@@ -381,7 +381,7 @@ class TaskModel extends AdminModel
         // If concurrency is not allowed, we only get a task if another one does not have a "lock"
         if (!$options['allowConcurrent']) {
             // Get count of locked (presumed running) tasks
-            $lockCountQuery = $db->getQuery(true)
+            $lockCountQuery = $db->createQuery()
                 ->from($db->quoteName(self::TASK_TABLE))
                 ->select('COUNT(id)')
                 ->where($db->quoteName('locked') . ' IS NOT NULL');
@@ -401,7 +401,7 @@ class TaskModel extends AdminModel
             }
         }
 
-        $lockQuery = $db->getQuery(true);
+        $lockQuery = $db->createQuery();
 
 
 
@@ -437,7 +437,7 @@ class TaskModel extends AdminModel
         } else {
             // Pick from the front of the task queue if no 'id' is specified
             // Get the id of the next task in the task queue
-
+            
             // ensure the idQuery has the same conditions
             $idQuery = clone  $lockQuery;
             $idQuery->from($db->quoteName(self::TASK_TABLE))
@@ -468,6 +468,8 @@ class TaskModel extends AdminModel
         try {
             $db->setQuery($lockQuery)->execute();
         } catch (\RuntimeException $e) {
+            $db->unlockTables();
+            return null;
         } finally {
             $affectedRows = $db->getAffectedRows();
             $db->unlockTables();
@@ -485,7 +487,7 @@ class TaskModel extends AdminModel
             return null;
         }
 
-        $getQuery = $db->getQuery(true);
+        $getQuery =  $db->createQuery();
 
         $getQuery->select('*')
             ->from($db->quoteName(self::TASK_TABLE))
@@ -493,7 +495,7 @@ class TaskModel extends AdminModel
             ->bind(':now', $now);
 
         $task = $db->setQuery($getQuery)->loadObject();
-
+    
         $task->execution_rules = json_decode($task->execution_rules);
         $task->cron_rules      = json_decode($task->cron_rules);
 
