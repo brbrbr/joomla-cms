@@ -403,9 +403,7 @@ class TaskModel extends AdminModel
 
         $lockQuery = $db->getQuery(true);
 
-        $lockQuery->update($db->quoteName(self::TASK_TABLE))
-            ->set($db->quoteName('locked') . ' = :now1')
-            ->bind(':now1', $now);
+
 
         // Array of all active routine ids
         $activeRoutines = array_map(
@@ -435,42 +433,43 @@ class TaskModel extends AdminModel
         }
 
         if ($options['id'] > 0) {
-            $lockQuery->where($db->quoteName('id') . ' = :taskId')
-                ->bind(':taskId', $options['id'], ParameterType::INTEGER);
+            $taskId = $options['id'];
         } else {
             // Pick from the front of the task queue if no 'id' is specified
             // Get the id of the next task in the task queue
-            $idQuery = $db->getQuery(true)
-                ->from($db->quoteName(self::TASK_TABLE))
+
+            // ensure the idQuery has the same conditions
+            $idQuery = clone  $lockQuery;
+            $idQuery->from($db->quoteName(self::TASK_TABLE))
                 ->select($db->quoteName('id'))
-                ->where($db->quoteName('state') . ' = 1')
+                ->where($db->quoteName('next_execution') . ' IS NOT Null') //ignore manual takks
                 ->order($db->quoteName('priority') . ' DESC')
                 ->order($db->quoteName('next_execution') . ' ASC')
                 ->setLimit(1);
-
             try {
-                $ids = $db->setQuery($idQuery)->loadColumn();
+                $taskId = $db->setQuery($idQuery)->loadResult(); //always only one result
             } catch (\RuntimeException $e) {
                 $db->unlockTables();
-
                 return null;
             }
 
-            if (\count($ids) === 0) {
+            if ($taskId === null) {
                 $db->unlockTables();
-
                 return null;
             }
-
-            $lockQuery->whereIn($db->quoteName('id'), $ids);
         }
+        //complete the lock query
+        $lockQuery->where($db->quoteName('id') . ' = :taskId')
+            ->bind(':taskId', $taskId, ParameterType::INTEGER)
+            ->update($db->quoteName(self::TASK_TABLE))
+            ->set($db->quoteName('locked') . ' = :now1')
+            ->bind(':now1', $now);
 
         try {
             $db->setQuery($lockQuery)->execute();
         } catch (\RuntimeException $e) {
         } finally {
             $affectedRows = $db->getAffectedRows();
-
             $db->unlockTables();
         }
 
