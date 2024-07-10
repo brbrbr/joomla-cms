@@ -453,32 +453,30 @@ class TaskModel extends AdminModel
         */
         $task->execution_rules = json_decode($task->execution_rules);
         $task->cron_rules      = json_decode($task->cron_rules);
-        $task->taskOption = SchedulerHelper::getTaskOptions()->findOption($task->type);
+        $task->taskOption      = SchedulerHelper::getTaskOptions()->findOption($task->type);
         return $task;
     }
 
-    private  function getLock(int $id)
+    private function getLock(int $id)
     {
-        $app = $this->app;
-        $db = $this->getDatabase();
+        $app    = $this->app;
+        $db     = $this->getDatabase();
         $driver = $db->getServerType();
 
         //no information in the key
         $key = md5($app->get('db') . $app->get('dbprefix') . (string) $id);
 
         if ($driver === 'mysql') {
-
             header("lock-key-sql: $key");
             $query = 'SELECT GET_LOCK(' . $db->quote($key) . ',0)';
             $state = $db->setQuery($query)->loadResult();
             return 1 == $state;
-        } else {
-            $keyInt = crc32($key); // lock key is 64 bit. this will fit
-            header("lock-int-pgsql: $keyInt");
-            $query = "SELECT pg_try_advisory_lock($keyInt)";
-            $state = $db->setQuery($query)->loadResult();
-            return $state;
         }
+        $keyInt = crc32($key); // lock key is 64 bit. this will fit
+        header("lock-int-pgsql: $keyInt");
+        $query = "SELECT pg_try_advisory_lock($keyInt)";
+        $state = $db->setQuery($query)->loadResult();
+        return $state;
     }
 
 
