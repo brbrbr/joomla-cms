@@ -376,7 +376,8 @@ class TaskModel extends AdminModel
         if (!$options['allowConcurrent']) {
             //there is no need to cancel the lock as it is released on session end.
             if (!$this->getLock(0)) {
-                return null;
+                $this->app->getLanguage()->load('com_scheduler', JPATH_ADMINISTRATOR);
+                throw new \Exception(Text::_('COM_SCHEDULER_TASKS_LOCKED'));
             }
         }
 
@@ -433,48 +434,45 @@ class TaskModel extends AdminModel
         try {
             $task = $db->setQuery($idQuery)->loadObject();
         } catch (\RuntimeException $e) {
-            return null;
+            throw $e;
         }
 
         if ($task === null) {
             return null;
         }
-        //    Example per task
-        //I think the current is per 'site'
-        // If concurrency is not allowed, we only get a task if another one does not have a "lock"
-        /*
-        if (!$options['allowConcurrent']) {
-            //there is no need to cancel the lock as it is released on session end.
-            if (!$this->getLock($task->id)) {
-                return null;
-            }
+
+        //allow only one instance per task id - even with allowConcurrent 
+        if (!$this->getLock($task->id)) {
+            $this->app->getLanguage()->load('com_scheduler', JPATH_ADMINISTRATOR);
+            throw new \Exception(Text::_('COM_SCHEDULER_TASK_LOCKED'));
         }
 
-        */
+
         $task->execution_rules = json_decode($task->execution_rules);
         $task->cron_rules      = json_decode($task->cron_rules);
         $task->taskOption = SchedulerHelper::getTaskOptions()->findOption($task->type);
         return $task;
     }
 
-    private  function getLock(int $id)
+    private  function getLock(int $id, int $timeout = 0)
     {
         $app = $this->app;
         $db = $this->getDatabase();
         $driver = $db->getServerType();
-
+        $query                   = $db->createQuery();
         //no information in the key
         //postgressql requires an int ( 64 bit, so crc32 will fit)
         $key = crc32($app->get('db') . $app->get('dbprefix') . (string) $id);
         header("lock-id: $key");
         if ($driver === 'mysql') {
-            $query = 'SELECT GET_LOCK(' . $db->quote($key) . ',0)';
-            $state = $db->setQuery($query)->loadResult();
-            return 1 == $state;
+            $query->select('GET_LOCK (:name,:timeout)')
+                ->bind(':name', $key, ParameterType::STRING) //$key is a int but GET_LOCK takes a string
+                ->bind(':timeout', $timeout, ParameterType::INTEGER);
+            return 1 == $db->setQuery($query)->loadREsult();
         } else {
-            $query = "SELECT pg_try_advisory_lock($key)";
-            $state = $db->setQuery($query)->loadResult();
-            return $state;
+            $query->select('pg_try_advisory_lock (:id)')
+                ->bind(':id', $key, ParameterType::INTEGER); //$key is a int , pg_try_advisory_lock requires 64 bit int
+            return $db->setQuery($query)->loadResult();
         }
     }
 

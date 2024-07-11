@@ -245,18 +245,27 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
          * We will allow CLI exclusive tasks to be fetched and executed, it's left to routines to do a runtime check
          * if they want to refuse normal operation.
          */
-        $task = (new Scheduler())->getTask(
-            [
-                'id'               => $id,
-                'allowDisabled'    => true,
-                'bypassScheduling' => true,
-                'allowConcurrent'  => $allowConcurrent,
-            ]
-        );
+        try {
+            $task = (new Scheduler())->getTask(
+                [
+                    'id'               => $id,
+                    'allowDisabled'    => true,
+                    'bypassScheduling' => true,
+                    'allowConcurrent'  => $allowConcurrent,
+                ]
+            );
+        } catch (\Exception $e) {
+            $event->addArgument('result', ['output' => $e->getMessage()]);
+        }
 
         if ($task) {
-            $task->run();
-            $event->addArgument('result', $task->getContent());
+            try {
+                $task->run();
+            } catch (\Exception $e) {
+                $event->addArgument('result', ['output' => $e->getMessage()]);
+            } finally {
+                $event->addArgument('result', $task->getContent());
+            }
         } else {
             /**
              * Placeholder result, but the idea is if we failed to fetch the task, it's likely because another task was
@@ -264,7 +273,8 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
              * so we know the task probably exists and is either enabled/disabled (not trashed).
              */
             // @todo language constant + review if this is done right.
-            $event->addArgument('result', ['message' => 'could not acquire lock on task. retry or allow concurrency.']);
+
+            $event->addArgument('result', ['output' => 'No task to execute']);
         }
     }
 
