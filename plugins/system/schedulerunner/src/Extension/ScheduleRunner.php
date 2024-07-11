@@ -256,25 +256,26 @@ final class ScheduleRunner extends CMSPlugin implements SubscriberInterface
             );
         } catch (\Exception $e) {
             $event->addArgument('result', ['output' => $e->getMessage()]);
-        }
+        } finally {
 
-        if ($task) {
-            try {
-                $task->run();
-            } catch (\Exception $e) {
-                $event->addArgument('result', ['output' => $e->getMessage()]);
-            } finally {
-                $event->addArgument('result', $task->getContent());
+            if ($task) {
+                try {
+                    $task->run();
+                } catch (\Exception $e) {
+                    $event->addArgument('result', ['output' => $e->getMessage()]);
+                } finally {
+                    $event->addArgument('result', $task->getContent());
+                }
+            } else {
+                /**
+                 * Placeholder result, but the idea is if we failed to fetch the task, it's likely because another task was
+                 * already running. This is a fair assumption if this test run was triggered through the administrator backend,
+                 * so we know the task probably exists and is either enabled/disabled (not trashed).
+                 */
+                // @todo language constant + review if this is done right.
+
+                $event->addArgument('result', ['output' => 'No task to execute']);
             }
-        } else {
-            /**
-             * Placeholder result, but the idea is if we failed to fetch the task, it's likely because another task was
-             * already running. This is a fair assumption if this test run was triggered through the administrator backend,
-             * so we know the task probably exists and is either enabled/disabled (not trashed).
-             */
-            // @todo language constant + review if this is done right.
-
-            $event->addArgument('result', ['output' => 'No task to execute']);
         }
     }
 
