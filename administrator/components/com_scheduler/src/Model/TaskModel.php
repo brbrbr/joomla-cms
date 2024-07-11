@@ -354,6 +354,7 @@ class TaskModel extends AdminModel
      * @since   4.1.0
      * @throws UndefinedOptionsException|InvalidOptionsException
      * @throws \RuntimeException
+     * @throws \Exception
      */
     public function getTask(array $options = []): ?\stdClass
     {
@@ -453,6 +454,24 @@ class TaskModel extends AdminModel
         $task->taskOption = SchedulerHelper::getTaskOptions()->findOption($task->type);
         return $task;
     }
+    
+    /**
+     * 
+     * acquires a database lock for the give id.
+     * the lock is per database + prefix so should be unique per site
+     * there is no releaseLock since the tasks runs later outside this model
+     * locks are release as soon as the database connection terminates
+     * 
+     * @since __DEPLOY_VERSION__
+     * 
+     * @param int $id a extra identifier for the lock
+     * @param int $timeout time to wait for the lock. Unused. 
+     * 
+     * @return bool whether or not a lock is acquired
+     * 
+     * 
+     * 
+     */
 
     private  function getLock(int $id, int $timeout = 0)
     {
