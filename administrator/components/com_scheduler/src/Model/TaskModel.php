@@ -463,7 +463,7 @@ class TaskModel extends AdminModel
         //no information in the key
         //postgressql requires an int ( 64 bit, so crc32 will fit)
         $key = crc32($app->get('db') . $app->get('dbprefix') . (string) $id);
-        header("lock-id: $key");
+        header("lock-id-$id: $key");
         if ($driver === 'mysql') {
             $query->select('GET_LOCK (:name,:timeout)')
                 ->bind(':name', $key, ParameterType::STRING) //$key is a int but GET_LOCK takes a string
