@@ -282,24 +282,18 @@ class ArticlesModel extends ListModel
                     $db->quoteName('parent.created_user_id', 'parent_category_uid'),
                     $db->quoteName('parent.level', 'parent_category_level'),
                     $db->quoteName('ua.name', 'author_name'),
-                    $db->quoteName('wa.stage_id', 'stage_id'),
-                    $db->quoteName('ws.title', 'stage_title'),
-                    $db->quoteName('ws.workflow_id', 'workflow_id'),
-                    $db->quoteName('w.title', 'workflow_title'),
+
                 ]
             )
             ->from($db->quoteName('#__content', 'a'))
-            ->where($db->quoteName('wa.extension') . ' = ' . $db->quote('com_content.article'))
+
             ->join('LEFT', $db->quoteName('#__languages', 'l'), $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language'))
             ->join('LEFT', $db->quoteName('#__content_frontpage', 'fp'), $db->quoteName('fp.content_id') . ' = ' . $db->quoteName('a.id'))
             ->join('LEFT', $db->quoteName('#__users', 'uc'), $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out'))
             ->join('LEFT', $db->quoteName('#__viewlevels', 'ag'), $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access'))
             ->join('LEFT', $db->quoteName('#__categories', 'c'), $db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid'))
             ->join('LEFT', $db->quoteName('#__categories', 'parent'), $db->quoteName('parent.id') . ' = ' . $db->quoteName('c.parent_id'))
-            ->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'))
-            ->join('INNER', $db->quoteName('#__workflow_associations', 'wa'), $db->quoteName('wa.item_id') . ' = ' . $db->quoteName('a.id'))
-            ->join('INNER', $db->quoteName('#__workflow_stages', 'ws'), $db->quoteName('ws.id') . ' = ' . $db->quoteName('wa.stage_id'))
-            ->join('INNER', $db->quoteName('#__workflows', 'w'), $db->quoteName('w.id') . ' = ' . $db->quoteName('ws.workflow_id'));
+            ->join('LEFT', $db->quoteName('#__users', 'ua'), $db->quoteName('ua.id') . ' = ' . $db->quoteName('a.created_by'));
 
         if (PluginHelper::isEnabled('content', 'vote')) {
             $query->select(
@@ -343,7 +337,7 @@ class ArticlesModel extends ListModel
         // Filter by featured.
         $featured = (string) $this->getState('filter.featured');
 
-        if (\in_array($featured, ['0','1'])) {
+        if (\in_array($featured, ['0', '1'])) {
             $featured = (int) $featured;
             $query->where($db->quoteName('a.featured') . ' = :featured')
                 ->bind(':featured', $featured, ParameterType::INTEGER);
@@ -361,10 +355,21 @@ class ArticlesModel extends ListModel
 
         if ($params->get('workflow_enabled') && is_numeric($workflowStage)) {
             $workflowStage = (int) $workflowStage;
-            $query->where($db->quoteName('wa.stage_id') . ' = :stage')
-                ->bind(':stage', $workflowStage, ParameterType::INTEGER);
-        }
+            $query->where($db->quoteName('wa.stage_id') . ' = :stage')->bind(':stage', $workflowStage, ParameterType::INTEGER);
+        
+            $query->where($db->quoteName('wa.extension') . ' = ' . $db->quote('com_content.article'))
+                ->join('INNER', $db->quoteName('#__workflow_associations', 'wa'), $db->quoteName('wa.item_id') . ' = ' . $db->quoteName('a.id'))
+                ->join('INNER', $db->quoteName('#__workflow_stages', 'ws'), $db->quoteName('ws.id') . ' = ' . $db->quoteName('wa.stage_id'))
+                ->join('INNER', $db->quoteName('#__workflows', 'w'), $db->quoteName('w.id') . ' = ' . $db->quoteName('ws.workflow_id'))
+                ->select([
+                    $db->quoteName('wa.stage_id', 'stage_id'),
+                    $db->quoteName('ws.title', 'stage_title'),
+                    $db->quoteName('ws.workflow_id', 'workflow_id'),
+                    $db->quoteName('w.title', 'workflow_title'),
 
+                ]);
+        
+            }
         $published = (string) $this->getState('filter.published');
 
         if ($published !== '*') {
@@ -578,7 +583,7 @@ class ArticlesModel extends ListModel
 
                 $query = $db->getQuery(true);
 
-                $query  ->select(
+                $query->select(
                     [
                         $db->quoteName('t.id', 'value'),
                         $db->quoteName('t.title', 'text'),
