@@ -128,7 +128,7 @@ steps:
   - name: prepare_system_tests
     depends_on:
       - npm
-    image: joomlaprojects/docker-images:systemtests8.1
+    image: joomlaprojects/docker-images:cypress8.1
     volumes:
       - name: cypress-cache
         path: /root/.cache/Cypress
@@ -433,6 +433,6 @@ trigger:
 
 ---
 kind: signature
-hmac: 13d6f5dfbf7679307a95c5991f84edcbb03497f5afb312c766ccb5af9cc5d7e5
+hmac: 1d94d558654c2898eea3360184eede03be6b48154c110579fe0254ea0780d91a
 
 ...
