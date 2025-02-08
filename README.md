@@ -68,7 +68,7 @@ Do you want to improve Joomla?
 * Where to [request a feature](https://issues.joomla.org)?
 * How do you [report a bug](https://docs.joomla.org/Special:MyLanguage/Filing_bugs_and_issues) on the [Issue Tracker](https://issues.joomla.org)?
 * Get Involved: Joomla! is community developed software. [Join the community](https://volunteers.joomla.org).
-* Documentation for [Developers](https://docs.joomla.org/Special:MyLanguage/Portal:Developers).
+* Documentation for [Developers](https://manual.joomla.org/).
 * Documentation for [Web designers](https://docs.joomla.org/Special:MyLanguage/Web_designers).
 * Provide a translation for Joomla: [Joomla Crowdin Project](https://joomla.crowdin.com/cms)
 
