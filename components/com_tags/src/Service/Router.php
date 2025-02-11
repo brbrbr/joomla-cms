@@ -268,7 +268,7 @@ class Router extends RouterBase
 
         foreach ($segments as &$segment) {
             if (strpos($segment, ':')) {
-                [$void, $segment] = explode(':', $segment, 2);
+                [, $segment] = explode(':', $segment, 2);
             }
         }
 

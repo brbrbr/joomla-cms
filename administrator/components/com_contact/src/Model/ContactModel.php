@@ -316,7 +316,7 @@ class ContactModel extends AdminModel
 
         // Alter the name for save as copy
         if ($input->get('task') == 'save2copy') {
-            $origTable = clone $this->getTable();
+            $origTable = $this->getTable();
             $origTable->load($input->getInt('id'));
 
             if ($data['name'] == $origTable->name) {

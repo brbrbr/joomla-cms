@@ -127,7 +127,7 @@ class Router extends RouterView
 
             if ($this->noIDs) {
                 foreach ($path as &$segment) {
-                    list($id, $segment) = explode(':', $segment, 2);
+                    [, $segment] = explode(':', $segment, 2);
                 }
             }
 

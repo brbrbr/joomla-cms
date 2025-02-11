@@ -117,7 +117,7 @@ class StageModel extends AdminModel
         }
 
         if ($input->get('task') == 'save2copy') {
-            $origTable = clone $this->getTable();
+            $origTable = $this->getTable();
 
             // Alter the title for save as copy
             if ($origTable->load(['title' => $data['title']])) {

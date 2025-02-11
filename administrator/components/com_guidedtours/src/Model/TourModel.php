@@ -68,7 +68,7 @@ class TourModel extends AdminModel
         }
 
         if ($input->get('task') == 'save2copy') {
-            $origTable = clone $this->getTable();
+            $origTable = $this->getTable();
             $origTable->load($input->getInt('id'));
 
             $data['published'] = 0;

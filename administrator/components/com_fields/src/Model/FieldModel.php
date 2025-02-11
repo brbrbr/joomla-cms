@@ -140,7 +140,7 @@ class FieldModel extends AdminModel
         $input = Factory::getApplication()->getInput();
 
         if ($input->get('task') == 'save2copy') {
-            $origTable = clone $this->getTable();
+            $origTable = $this->getTable();
             $origTable->load($input->getInt('id'));
 
             if ($data['title'] == $origTable->title) {
