@@ -2369,6 +2369,10 @@ class JoomlaInstallerScript
             '/media/system/css/system-site-offline_rtl.min.css.gz',
             '/media/system/scss/system-site-offline_rtl.scss',
             // From 5.3.0-alpha3 to 5.3.0-beta1
+            '/administrator/modules/mod_feed/mod_feed.php',
+            '/administrator/modules/mod_privacy_status/mod_privacy_status.php',
+            '/libraries/vendor/guzzlehttp/promises/src/functions.php',
+            '/libraries/vendor/guzzlehttp/promises/src/functions_include.php',
             '/libraries/vendor/maximebf/debugbar/LICENSE',
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Bridge/CacheCacheCollector.php',
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Bridge/DoctrineCollector.php',
