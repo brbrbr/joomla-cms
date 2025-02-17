@@ -796,10 +796,10 @@ abstract class HTMLHelper
     {
         @trigger_error('Method HTMLHelper::stylesheet() is deprecated, and will be removed in 7.0', \E_USER_DEPRECATED);
 
-        $options['relative']      = $options['relative'] ?? false;
-        $options['pathOnly']      = $options['pathOnly'] ?? false;
-        $options['detectBrowser'] = $options['detectBrowser'] ?? false;
-        $options['detectDebug']   = $options['detectDebug'] ?? true;
+        $options['relative'] ??= false;
+        $options['pathOnly'] ??= false;
+        $options['detectBrowser'] ??= false;
+        $options['detectDebug'] ??= true;
 
         $includes = static::includeRelativeFiles('css', $file, $options['relative'], $options['detectBrowser'], $options['detectDebug']);
 
@@ -848,10 +848,10 @@ abstract class HTMLHelper
     {
         @trigger_error('Method HTMLHelper::script() is deprecated, and will be removed in 7.0', \E_USER_DEPRECATED);
 
-        $options['relative']      = $options['relative'] ?? false;
-        $options['pathOnly']      = $options['pathOnly'] ?? false;
-        $options['detectBrowser'] = $options['detectBrowser'] ?? false;
-        $options['detectDebug']   = $options['detectDebug'] ?? true;
+        $options['relative'] ??= false;
+        $options['pathOnly'] ??= false;
+        $options['detectBrowser'] ??= false;
+        $options['detectDebug'] ??= true;
 
         $includes = static::includeRelativeFiles('js', $file, $options['relative'], $options['detectBrowser'], $options['detectDebug']);
 
