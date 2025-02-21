@@ -46,7 +46,7 @@ final class ActionLogs extends CMSPlugin implements SubscriberInterface
      *
      * @return array
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.3.0
      */
     public static function getSubscribedEvents(): array
     {
@@ -67,7 +67,7 @@ final class ActionLogs extends CMSPlugin implements SubscriberInterface
      *
      * @return  void
      *
-     * @since   __DEPLOY_VERSION__
+     * @since   5.3.0
      */
     public function onAfterInitialise(AfterInitialiseEvent $event): void
     {

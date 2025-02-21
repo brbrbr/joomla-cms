@@ -360,7 +360,7 @@ abstract class HTMLHelper
      *                               (boolean) - will enable debugging depends on site configuration, (1) - force debug On, (-1) - force debug Off;
      *
      * @return string
-     * @since  __DEPLOY_VERSION__
+     * @since  5.3.0
      */
     final public static function mediaPath(string $folder, string $file, array $options = []): string
     {
@@ -789,7 +789,7 @@ abstract class HTMLHelper
      * @see   Browser
      * @since 1.5
      *
-     * @deprecated  __DEPLOY_VERSION__ will be removed in 7.0
+     * @deprecated  5.3.0 will be removed in 7.0
      *              Use WebAssetManager::useStyle() or WebAssetManager::registerAndUseStyle() instead.
      */
     public static function stylesheet($file, $options = [], $attribs = [])
@@ -841,7 +841,7 @@ abstract class HTMLHelper
      * @see   HTMLHelper::stylesheet()
      * @since 1.5
      *
-     * @deprecated  __DEPLOY_VERSION__ will be removed in 7.0
+     * @deprecated  5.3.0 will be removed in 7.0
      *              Use WebAssetManager::useScript() or WebAssetManager::registerAndUseScript() instead.
      */
     public static function script($file, $options = [], $attribs = [])
