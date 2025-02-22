@@ -479,9 +479,9 @@ class FtpClient
         }
 
         // Match the system string to an OS
-        if (strpos(strtoupper($ret), 'MAC') !== false) {
+        if (str_contains(strtoupper($ret), 'MAC')) {
             $ret = 'MAC';
-        } elseif (strpos(strtoupper($ret), 'WIN') !== false) {
+        } elseif (str_contains(strtoupper($ret), 'WIN')) {
             $ret = 'WIN';
         } else {
             $ret = 'UNIX';

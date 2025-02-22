@@ -215,7 +215,7 @@ abstract class CMSPlugin implements DispatcherAwareInterface, PluginInterface, L
 
         /** @var \ReflectionMethod $method */
         foreach ($methods as $method) {
-            if (substr($method->name, 0, 2) !== 'on') {
+            if (!str_starts_with($method->name, 'on')) {
                 continue;
             }
 

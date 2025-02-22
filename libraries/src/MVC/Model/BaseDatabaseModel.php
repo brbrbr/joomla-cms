@@ -311,7 +311,7 @@ abstract class BaseDatabaseModel extends BaseModel implements
             /** @var CallbackController $cache */
             $cache = $this->getCacheControllerFactory()->createCacheController('callback', $options);
             $cache->clean();
-        } catch (CacheExceptionInterface $exception) {
+        } catch (CacheExceptionInterface) {
             $options['result'] = false;
         }
 
@@ -398,7 +398,7 @@ abstract class BaseDatabaseModel extends BaseModel implements
     {
         try {
             return $this->getDatabase();
-        } catch (DatabaseNotFoundException $e) {
+        } catch (DatabaseNotFoundException) {
             throw new \UnexpectedValueException('Database driver not set in ' . __CLASS__);
         }
     }

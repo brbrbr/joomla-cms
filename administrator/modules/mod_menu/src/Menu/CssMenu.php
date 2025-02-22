@@ -293,7 +293,7 @@ class CssMenu
                 continue;
             }
 
-            if (!empty($item->link) && substr($item->link, 0, 8) === 'special:') {
+            if (!empty($item->link) && str_starts_with($item->link, 'special:')) {
                 $special = substr($item->link, 8);
 
                 if ($special === 'language-forum') {
@@ -498,7 +498,7 @@ class CssMenu
         }
 
         // We were passed a class name
-        if (substr($identifier, 0, 6) == 'class:') {
+        if (str_starts_with($identifier, 'class:')) {
             $class = substr($identifier, 6);
         } else {
             // We were passed background icon url. Build the CSS class for the icon

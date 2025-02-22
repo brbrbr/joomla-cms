@@ -514,7 +514,7 @@ final class LanguageFilter extends CMSPlugin implements SubscriberInterface
             $language_new = $this->languageFactory->createLanguage($lang_code, (bool) $app->get('debug_lang'));
 
             foreach ($language->getPaths() as $extension => $files) {
-                if (strpos($extension, 'plg_system') !== false) {
+                if (str_contains($extension, 'plg_system')) {
                     $extension_name = substr($extension, 11);
 
                     $language_new->load($extension, JPATH_ADMINISTRATOR)

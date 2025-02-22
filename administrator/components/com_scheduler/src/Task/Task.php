@@ -333,7 +333,7 @@ class Task implements LoggerAwareInterface
         try {
             $db->lockTable('#__scheduler_tasks');
             $db->setQuery($query)->execute();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return false;
         } finally {
             $db->unlockTables();
@@ -395,7 +395,7 @@ class Task implements LoggerAwareInterface
 
         try {
             $db->setQuery($query)->execute();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return false;
         }
 
@@ -446,7 +446,7 @@ class Task implements LoggerAwareInterface
 
         try {
             $db->setQuery($query)->execute();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
         }
 
         $this->set('next_execution', $nextExec);

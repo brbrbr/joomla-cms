@@ -128,7 +128,7 @@ class TimezoneField extends GroupedlistField
         // Build the group lists.
         foreach ($zones as $zone) {
             // Time zones not in a group we will ignore.
-            if (strpos($zone, '/') === false) {
+            if (!str_contains($zone, '/')) {
                 continue;
             }
 

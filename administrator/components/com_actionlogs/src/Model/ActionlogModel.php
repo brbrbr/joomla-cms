@@ -91,7 +91,7 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
             try {
                 $db->insertObject('#__action_logs', $logMessage);
                 $loggedMessages[] = $logMessage;
-            } catch (\RuntimeException $e) {
+            } catch (\RuntimeException) {
                 // Ignore it
             }
         }
@@ -99,7 +99,7 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
         try {
             // Send notification email to users who choose to be notified about the action logs
             $this->sendNotificationEmails($loggedMessages, $user->name, $context);
-        } catch (MailDisabledException | phpMailerException $e) {
+        } catch (MailDisabledException | phpMailerException) {
             // Ignore it
         }
     }

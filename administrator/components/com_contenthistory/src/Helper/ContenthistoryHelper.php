@@ -201,7 +201,7 @@ class ContenthistoryHelper
 
             try {
                 $result = $db->loadResult();
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // Ignore any errors and just return false
                 return false;
             }

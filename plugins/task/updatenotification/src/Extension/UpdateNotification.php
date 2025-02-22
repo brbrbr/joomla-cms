@@ -127,7 +127,7 @@ final class UpdateNotification extends CMSPlugin implements SubscriberInterface
         // If we're here, we have updates. First, get a link to the Joomla! Update component.
         $baseURL  = Uri::base();
         $baseURL  = rtrim($baseURL, '/');
-        $baseURL .= (substr($baseURL, -13) !== 'administrator') ? '/administrator/' : '/';
+        $baseURL .= (!str_ends_with($baseURL, 'administrator')) ? '/administrator/' : '/';
         $baseURL .= 'index.php?option=com_joomlaupdate';
         $uri      = new Uri($baseURL);
 

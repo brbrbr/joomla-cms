@@ -398,7 +398,7 @@ class TaskModel extends AdminModel
 
             $db->setQuery($lockQuery)->execute();
             $affectedRows = $db->getAffectedRows();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return null;
         } finally {
             $db->unlockTables();
@@ -428,7 +428,7 @@ class TaskModel extends AdminModel
 
         try {
             $runningCount = $db->setQuery($lockCountQuery)->loadResult();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return false;
         }
 
@@ -527,7 +527,7 @@ class TaskModel extends AdminModel
 
         try {
             return $db->setQuery($idQuery)->loadColumn();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return [];
         }
     }
@@ -551,7 +551,7 @@ class TaskModel extends AdminModel
 
         try {
             $task = $db->setQuery($getQuery)->loadObject();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             return null;
         }
 

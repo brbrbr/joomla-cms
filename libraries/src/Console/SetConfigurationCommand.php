@@ -127,7 +127,7 @@ class SetConfigurationCommand extends AbstractCommand
         $collected = [];
 
         foreach ($options as $option) {
-            if (strpos($option, '=') === false) {
+            if (!str_contains($option, '=')) {
                 $this->ioStyle->error('Options and values should be separated by "="');
 
                 return false;

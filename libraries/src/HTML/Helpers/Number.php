@@ -58,7 +58,7 @@ abstract class Number
             list(, $oBytes, $oUnit) = $matches;
 
             if ($oUnit && is_numeric($oBytes)) {
-                $oBase  = $iec && strpos($oUnit, 'i') === false ? 1000 : 1024;
+                $oBase  = $iec && !str_contains($oUnit, 'i') ? 1000 : 1024;
                 $factor = pow($oBase, stripos('BKMGTPEZY', $oUnit[0]));
                 $oBytes *= $factor;
             }

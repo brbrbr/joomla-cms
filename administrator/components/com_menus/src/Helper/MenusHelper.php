@@ -383,7 +383,7 @@ class MenusHelper extends ContentHelper
                     $root->addChild($menuitem);
                 }
             }
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             Factory::getApplication()->enqueueMessage(Text::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
         }
 
@@ -719,7 +719,7 @@ class MenusHelper extends ContentHelper
 
                     return;
                 }
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 $item->link = '';
 
                 return;

@@ -131,7 +131,7 @@ final class Token extends CMSPlugin implements SubscriberInterface
             $authHeader  = $this->getApplication()->getInput()->server->get('REDIRECT_HTTP_AUTHORIZATION', '', 'string');
         }
 
-        if (substr($authHeader, 0, 7) == 'Bearer ') {
+        if (str_starts_with($authHeader, 'Bearer ')) {
             $parts       = explode(' ', $authHeader, 2);
             $tokenString = trim($parts[1]);
             $tokenString = $this->filter->clean($tokenString, 'BASE64');
@@ -149,7 +149,7 @@ final class Token extends CMSPlugin implements SubscriberInterface
         // The token is a base64 encoded string. Make sure we can decode it.
         $authString = @base64_decode($tokenString);
 
-        if (empty($authString) || (strpos($authString, ':') === false)) {
+        if (empty($authString) || (!str_contains($authString, ':'))) {
             return;
         }
 

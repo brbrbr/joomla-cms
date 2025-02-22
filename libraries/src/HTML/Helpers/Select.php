@@ -140,7 +140,7 @@ abstract class Select
         $id = str_replace(['[', ']', ' '], '', $id);
 
         // If the selectbox contains "form-select-color-state" then load the JS file
-        if (strpos($attribs, 'form-select-color-state') !== false) {
+        if (str_contains($attribs, 'form-select-color-state')) {
             Factory::getDocument()->getWebAssetManager()
                 ->registerAndUseScript(
                     'webcomponent.select-colour',
