@@ -344,7 +344,7 @@ class FtpClient
      */
     public function isConnected()
     {
-        return ($this->_conn);
+        return $this->_conn;
     }
 
     /**

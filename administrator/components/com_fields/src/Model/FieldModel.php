@@ -229,7 +229,7 @@ class FieldModel extends AdminModel
          */
         if (
             $field && \in_array($field->type, ['list', 'checkboxes', 'radio'], true)
-            && isset($data['fieldparams']['options']) && isset($field->fieldparams['options'])
+            && isset($data['fieldparams']['options'], $field->fieldparams['options'])
         ) {
             $oldParams = $this->getParams($field->fieldparams['options']);
             $newParams = $this->getParams($data['fieldparams']['options']);

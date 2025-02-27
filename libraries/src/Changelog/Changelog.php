@@ -288,8 +288,7 @@ class Changelog
                         $this->$key = $val;
                     }
 
-                    unset($this->latest);
-                    unset($this->currentChangelog);
+                    unset($this->latest, $this->currentChangelog);
                 } elseif (isset($this->currentChangelog)) {
                     // The update might be for an older version of j!
                     unset($this->currentChangelog);

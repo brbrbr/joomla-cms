@@ -120,7 +120,7 @@ class ComponentDispatcher extends Dispatcher
         // Check for a controller.task command.
         if (str_contains($command, '.')) {
             // Explode the controller.task command.
-            list($controller, $task) = explode('.', $command);
+            [$controller, $task] = explode('.', $command);
 
             $this->input->set('controller', $controller);
             $this->input->set('task', $task);

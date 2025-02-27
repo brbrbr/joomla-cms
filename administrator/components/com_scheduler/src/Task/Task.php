@@ -207,7 +207,7 @@ class Task implements LoggerAwareInterface
         }
 
         $this->snapshot['status']      = Status::RUNNING;
-        $this->snapshot['taskStart']   = $this->snapshot['taskStart'] ?? microtime(true);
+        $this->snapshot['taskStart']   ??= microtime(true);
         $this->snapshot['netDuration'] = 0;
 
         /** @var ExecuteTaskEvent $event */

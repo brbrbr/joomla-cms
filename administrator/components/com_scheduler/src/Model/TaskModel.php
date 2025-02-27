@@ -119,7 +119,7 @@ class TaskModel extends AdminModel
      */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?FormFactoryInterface $formFactory = null)
     {
-        $config['events_map'] = $config['events_map'] ?? [];
+        $config['events_map'] ??= [];
 
         $config['events_map'] = array_merge(
             [
@@ -631,7 +631,7 @@ class TaskModel extends AdminModel
 
         // If no params, we set as empty array.
         // ? Is this the right place to do this
-        $data['params'] = $data['params'] ?? [];
+        $data['params'] ??= [];
 
         // Parent method takes care of saving to the table
         return parent::save($data);

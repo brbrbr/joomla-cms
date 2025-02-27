@@ -364,7 +364,7 @@ class ContactController extends FormController implements UserFactoryAwareInterf
 
             // Fallback on edit.own.
             if ($user->authorise('core.edit.own', $this->option . '.category.' . $categoryId)) {
-                return ($record->created_by === $user->id);
+                return $record->created_by === $user->id;
             }
 
             return false;

@@ -76,7 +76,7 @@ class CategoryController extends FormController
     {
         $user = $this->app->getIdentity();
 
-        return ($user->authorise('core.create', $this->extension) || \count($user->getAuthorisedCategories($this->extension, 'core.create')));
+        return $user->authorise('core.create', $this->extension) || \count($user->getAuthorisedCategories($this->extension, 'core.create'));
     }
 
     /**
