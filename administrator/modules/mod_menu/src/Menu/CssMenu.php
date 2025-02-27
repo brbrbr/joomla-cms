@@ -284,8 +284,8 @@ class CssMenu
                 continue;
             }
 
-            $item->scope = $item->scope ?? 'default';
-            $item->icon  = $item->icon ?? '';
+            $item->scope ??= 'default';
+            $item->icon  ??= '';
 
             // Whether this scope can be displayed. Applies only to preset items. Db driven items should use un/published state.
             if (($item->scope === 'help' && $this->params->get('showhelp', 1) == 0) || ($item->scope === 'edit' && !$this->params->get('shownew', 1))) {
