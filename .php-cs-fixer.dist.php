@@ -97,6 +97,8 @@ $config
             'combine_consecutive_issets'                       => true,
             // Calling unset on multiple items should be done in one call
             'combine_consecutive_unsets'                       => true,
+            // There must be no sprintf calls with only the first argument
+            'no_useless_sprintf'                               => true,
         ]
     )
     ->setFinder($finder);

@@ -91,7 +91,7 @@ class CategoryController extends FormController
      */
     protected function allowEdit($data = [], $key = 'parent_id')
     {
-        $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
+        $recordId = isset($data[$key]) ? (int) $data[$key] : 0;
         $user     = $this->app->getIdentity();
 
         // Check "edit" permission on record asset (explicit or inherited)
