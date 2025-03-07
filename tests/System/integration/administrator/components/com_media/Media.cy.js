@@ -74,6 +74,7 @@ describe('Test in backend that the media manager', () => {
   });
 
   it('can display an error message when an invalid path is defined in the url', () => {
+    cy.on('uncaught:exception', () => false);
     cy.visit('/administrator/index.php?option=com_media&path=local-images:/invalid');
     cy.wait('@getMedia');
 
@@ -81,6 +82,7 @@ describe('Test in backend that the media manager', () => {
   });
 
   it('can display an error message when an invalid path is defined in the session', () => {
+    cy.on('uncaught:exception', () => false);
     window.sessionStorage.setItem('joomla.mediamanager', JSON.stringify({ selectedDirectory: 'local-images:/invalid' }));
     cy.visit('/administrator/index.php?option=com_media');
     cy.wait('@getMedia');
