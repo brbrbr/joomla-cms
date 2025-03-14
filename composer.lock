@@ -5943,12 +5943,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/joomla-backports/json-api-php.git",
-                "reference": "a56f59df9e0fc95b1421a5210e1cdf208c9f91d2"
+                "reference": "c6580b75760cd00e555ef5ef1028f63231fb53f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/joomla-backports/json-api-php/zipball/a56f59df9e0fc95b1421a5210e1cdf208c9f91d2",
-                "reference": "a56f59df9e0fc95b1421a5210e1cdf208c9f91d2",
+                "url": "https://api.github.com/repos/joomla-backports/json-api-php/zipball/c6580b75760cd00e555ef5ef1028f63231fb53f2",
+                "reference": "c6580b75760cd00e555ef5ef1028f63231fb53f2",
                 "shasum": ""
             },
             "require": {
@@ -5991,7 +5991,7 @@
                 "jsonapi",
                 "standard"
             ],
-            "time": "2022-12-30T19:09:00+00:00"
+            "time": "2025-03-13T08:47:04+00:00"
         },
         {
             "name": "typo3/phar-stream-wrapper",
