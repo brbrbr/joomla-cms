@@ -2450,6 +2450,21 @@ class JoomlaInstallerScript
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Storage/PdoStorage.php',
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Storage/RedisStorage.php',
             '/libraries/vendor/maximebf/debugbar/src/DebugBar/Storage/StorageInterface.php',
+            // From 5.3.0-beta3 to 5.3.0-rc1
+            '/libraries/vendor/joomla/http/.drone.jsonnet',
+            '/libraries/vendor/joomla/http/.drone.yml',
+            '/libraries/vendor/joomla/oauth1/.drone.jsonnet',
+            '/libraries/vendor/joomla/oauth1/.drone.yml',
+            '/libraries/vendor/joomla/oauth2/.drone.jsonnet',
+            '/libraries/vendor/joomla/oauth2/.drone.yml',
+            '/libraries/vendor/joomla/router/.drone.jsonnet',
+            '/libraries/vendor/joomla/router/.drone.yml',
+            '/libraries/vendor/joomla/string/.drone.jsonnet',
+            '/libraries/vendor/joomla/string/.drone.yml',
+            '/libraries/vendor/joomla/uri/.drone.jsonnet',
+            '/libraries/vendor/joomla/uri/.drone.yml',
+            '/libraries/vendor/joomla/utilities/.drone.jsonnet',
+            '/libraries/vendor/joomla/utilities/.drone.yml',
         ];
 
         $folders = [
