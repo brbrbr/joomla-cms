@@ -186,6 +186,11 @@ class Uri extends \Joomla\Uri\Uri
             $uri                    = static::getInstance(static::base());
             static::$root['prefix'] = $uri->toString(['scheme', 'host', 'port']);
             static::$root['path']   = rtrim($uri->toString(['path']), '/\\');
+
+            // Remove '/administrator' from path if present at the end
+            if (str_ends_with(static::$root['path'], '/administrator')) {
+                static::$root['path'] = substr(static::$root['path'], 0, -13);
+            }
         }
 
         // Get the scheme
