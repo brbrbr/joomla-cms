@@ -269,5 +269,6 @@ plugins/system/yootheme/
 plugins/task/deltrash/
 plugins/user/gvs/
 reload.sh
+coverage/
 templates/yootheme/
 
