@@ -11,6 +11,7 @@ namespace Joomla\CMS\Extension;
 
 use Joomla\CMS\Dispatcher\ModuleDispatcherFactory;
 use Joomla\CMS\Event\AbstractEvent;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\HelperFactory;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -95,9 +96,16 @@ trait ExtensionManagerTrait
 
         // Path to look for services
         $path = JPATH_SITE . '/plugins/' . $type . '/' . $plugin;
-
-        return $this->loadExtension(PluginInterface::class, $plugin . ':' . $type, $path);
+        try {
+            return $this->loadExtension(PluginInterface::class, $plugin . ':' . $type, $path);
+        } catch (\Error $e) {
+            Factory::getApplication()->enqueueMessage($e->getMessage(),'error');
+            //behave like plugin not found.
+            $dispatcher = $this->getContainer()->get(DispatcherInterface::class);
+            return new DummyPlugin($dispatcher);
+        }
     }
+
 
     /**
      * Loads the extension.
