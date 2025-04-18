@@ -400,18 +400,49 @@ class ArticlesModel extends ListModel
 
         if (is_numeric($authorId)) {
             $authorId = (int) $authorId;
-            $type     = $this->getState('filter.author_id.include', true) ? ' = ' : ' <> ';
-            $query->where($db->quoteName('a.created_by') . $type . ':authorId')
-                ->bind(':authorId', $authorId, ParameterType::INTEGER);
+
+            if ($authorId === 0) {
+                // Only show deleted authors' articles
+                $subQuery = $db->getQuery(true)
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__users'));
+
+                $query->where($db->quoteName('a.created_by') . ' NOT IN (' . $subQuery . ')');
+            } else {
+                $type = $this->getState('filter.author_id.include', true) ? ' = ' : ' <> ';
+                $query->where($db->quoteName('a.created_by') . $type . ':authorId')
+                    ->bind(':authorId', $authorId, ParameterType::INTEGER);
+            }
         } elseif (\is_array($authorId)) {
             // Check to see if by_me is in the array
-            if (\in_array('by_me', $authorId)) {
+            $keyByMe = array_search('by_me', $authorId);
+
+            if ($keyByMe !== false) {
                 // Replace by_me with the current user id in the array
-                $authorId['by_me'] = $user->id;
+                $authorId[$keyByMe] = $user->id;
             }
 
             $authorId = ArrayHelper::toInteger($authorId);
-            $query->whereIn($db->quoteName('a.created_by'), $authorId);
+
+            if (\in_array(0, $authorId)) {
+                // Remove 0 from array and handle deleted users with OR condition
+                $authorId = array_filter($authorId);
+
+                // Subquery for deleted users
+                $subQuery = $db->getQuery(true)
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__users'));
+
+                // Build WHERE with both conditions
+                $query->where('(' .
+                    $db->quoteName('a.created_by') . ' NOT IN (' . $subQuery . ')' .
+                    (!empty($authorId)
+                        ? ' OR ' . $db->quoteName('a.created_by') . ' IN (' . implode(',', $query->bindArray($authorId)) . ')'
+                        : '') .
+                ')');
+            } else {
+                $query->whereIn($db->quoteName('a.created_by'), $authorId);
+            }
         }
 
         // Filter by search in title.
